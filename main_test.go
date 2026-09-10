@@ -6,6 +6,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	"github.com/MarcosJose/go-task-api/handlers"
 	_ "github.com/lib/pq"
 )
 
@@ -28,7 +29,8 @@ func TestTasksHandler(t *testing.T) {
 	req := httptest.NewRequest(http.MethodGet, "/tasks", nil)
 	rec := httptest.NewRecorder()
 
-	tasksHandler(rec, req)
+	handler := handlers.TasksHandler(db)
+	handler.ServeHTTP(rec, req)
 
 	if rec.Code != http.StatusOK {
 		t.Errorf("esperado status 200, obtido %d", rec.Code)
