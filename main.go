@@ -1,83 +1,42 @@
 package main
 
 import (
-	"encoding/json"
+	"database/sql"
 	"fmt"
 	"net/http"
-	"strconv"
-	"strings"
+
+	"github.com/MarcosJose/go-task-api/handlers"
+
+	_ "github.com/lib/pq"
 )
 
-type Task struct {
-	ID        int    `json:"id"`
-	Title     string `json:"title"`
-	Completed bool   `json:"completed"`
-}
-
-var tasks = []Task{
-	{ID: 1, Title: "Estudar Go", Completed: false},
-	{ID: 2, Title: "Criar API", Completed: true},
-}
-
-func tasksHandler(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-
-	switch r.Method {
-	case http.MethodGet:
-		json.NewEncoder(w).Encode(tasks)
-
-	case http.MethodPost:
-		var task Task
-
-		err := json.NewDecoder(r.Body).Decode(&task)
-		if err != nil {
-			http.Error(w, "JSON inválido", http.StatusBadRequest)
-			return
-		}
-
-		task.ID = len(tasks) + 1
-		tasks = append(tasks, task)
-
-		w.WriteHeader(http.StatusCreated)
-		json.NewEncoder(w).Encode(task)
-
-	default:
-		http.Error(w, "Método não permitido", http.StatusMethodNotAllowed)
-	}
-}
-
-func deleteTaskHandler(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodDelete {
-		http.Error(w, "Método não permitido", http.StatusMethodNotAllowed)
-		return
-	}
-
-	idText := strings.TrimPrefix(r.URL.Path, "/tasks/")
-	id, err := strconv.Atoi(idText)
-
-	if err != nil {
-		http.Error(w, "ID inválido", http.StatusBadRequest)
-		return
-	}
-
-	for i, task := range tasks {
-		if task.ID == id {
-			tasks = append(tasks[:i], tasks[i+1:]...)
-			w.WriteHeader(http.StatusNoContent)
-			return
-		}
-	}
-
-	http.Error(w, "Tarefa não encontrada", http.StatusNotFound)
-}
+var db *sql.DB
 
 func main() {
-	http.HandleFunc("/tasks", tasksHandler)
-	http.HandleFunc("/tasks/", deleteTaskHandler)
+	var err error
+
+	connStr := "host=postgres-go port=5432 user=postgres password=123456 dbname=tasks sslmode=disable"
+
+	db, err = sql.Open("postgres", connStr)
+	if err != nil {
+		fmt.Println("Erro ao abrir banco:", err)
+		return
+	}
+
+	err = db.Ping()
+	if err != nil {
+		fmt.Println("Erro ao conectar ao PostgreSQL:", err)
+		return
+	}
+
+	fmt.Println("PostgreSQL conectado com sucesso!")
+
+	http.HandleFunc("/tasks", handlers.TasksHandler(db))
+	http.HandleFunc("/tasks/", handlers.TasksHandler(db))
 
 	fmt.Println("Servidor rodando em http://localhost:8080")
 
-	err := http.ListenAndServe(":8080", nil)
+	err = http.ListenAndServe(":8080", nil)
 	if err != nil {
 		fmt.Println("Erro:", err)
 	}
