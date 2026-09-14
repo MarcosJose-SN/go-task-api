@@ -255,7 +255,7 @@ Desenvolvedor em formação com foco em **Backend, Go, APIs REST, bancos de dado
 ### Contato
 
 * GitHub: [MarcosJose-SN](https://github.com/MarcosJose-SN)
-* LinkedIn: [Marcos José](www.linkedin.com/in/marcos-jose-380915389)
+* LinkedIn: [Marcos José](www.linkedin.com/in/marcos-jose-380915389/)
 
 ---
 
