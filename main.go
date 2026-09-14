@@ -4,9 +4,11 @@ import (
 	"database/sql"
 	"fmt"
 	"net/http"
+	"os"
 
 	"github.com/MarcosJose/go-task-api/auth"
 	"github.com/MarcosJose/go-task-api/handlers"
+	"github.com/joho/godotenv"
 
 	_ "github.com/lib/pq"
 )
@@ -16,7 +18,19 @@ var db *sql.DB
 func main() {
 	var err error
 
-	connStr := "host=postgres-go port=5432 user=postgres password=123456 dbname=tasks sslmode=disable"
+	err = godotenv.Load()
+	if err != nil {
+		fmt.Println("Aviso: não foi possível carregar o .env:", err)
+	}
+
+	connStr := fmt.Sprintf(
+		"host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
+		os.Getenv("DB_HOST"),
+		os.Getenv("DB_PORT"),
+		os.Getenv("DB_USER"),
+		os.Getenv("DB_PASSWORD"),
+		os.Getenv("DB_NAME"),
+	)
 
 	db, err = sql.Open("postgres", connStr)
 	if err != nil {
