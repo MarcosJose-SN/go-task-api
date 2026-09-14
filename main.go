@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/MarcosJose/go-task-api/auth"
 	"github.com/MarcosJose/go-task-api/handlers"
 
 	_ "github.com/lib/pq"
@@ -31,8 +32,12 @@ func main() {
 
 	fmt.Println("PostgreSQL conectado com sucesso!")
 
-	http.HandleFunc("/tasks", handlers.TasksHandler(db))
-	http.HandleFunc("/tasks/", handlers.TasksHandler(db))
+	tasksHandler := handlers.TasksHandler(db)
+
+	http.Handle("/tasks", auth.AuthMiddleware(tasksHandler))
+	http.Handle("/tasks/", auth.AuthMiddleware(tasksHandler))
+	http.Handle("/login", handlers.LoginHandler(db))
+	http.Handle("/register", handlers.RegisterHandler(db))
 
 	fmt.Println("Servidor rodando em http://localhost:8080")
 

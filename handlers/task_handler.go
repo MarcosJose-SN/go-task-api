@@ -7,11 +7,19 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/MarcosJose/go-task-api/auth"
 	"github.com/MarcosJose/go-task-api/models"
 )
 
 func TasksHandler(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+
+		username, ok := r.Context().Value(auth.UsernameKey).(string)
+
+		if !ok || username == "" {
+			http.Error(w, "Usuário não identificado", http.StatusUnauthorized)
+			return
+		}
 
 		w.Header().Set("Content-Type", "application/json")
 
