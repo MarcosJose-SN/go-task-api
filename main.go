@@ -9,12 +9,22 @@ import (
 	"github.com/MarcosJose/go-task-api/auth"
 	"github.com/MarcosJose/go-task-api/handlers"
 	"github.com/joho/godotenv"
+	httpSwagger "github.com/swaggo/http-swagger"
 
+	_ "github.com/MarcosJose/go-task-api/docs"
 	_ "github.com/lib/pq"
 )
 
 var db *sql.DB
 
+// @title Go Task API
+// @version 1.0
+// @description API REST para gerenciamento de tarefas com autenticação JWT.
+// @host localhost:8080
+// @BasePath /
+// @securityDefinitions.apikey BearerAuth
+// @in header
+// @name Authorization
 func main() {
 	var err error
 
@@ -52,6 +62,7 @@ func main() {
 	http.Handle("/tasks/", auth.AuthMiddleware(tasksHandler))
 	http.Handle("/login", handlers.LoginHandler(db))
 	http.Handle("/register", handlers.RegisterHandler(db))
+	http.Handle("/swagger/", httpSwagger.WrapHandler)
 
 	fmt.Println("Servidor rodando em http://localhost:8080")
 

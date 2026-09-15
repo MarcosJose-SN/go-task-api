@@ -1,0 +1,247 @@
+basePath: /
+definitions:
+  handlers.LoginRequest:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+  handlers.RegisterRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+  models.Task:
+    properties:
+      completed:
+        type: boolean
+      id:
+        type: integer
+      title:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: API REST para gerenciamento de tarefas com autenticação JWT.
+  title: Go Task API
+  version: "1.0"
+paths:
+  /login:
+    post:
+      consumes:
+      - application/json
+      description: Autentica o usuário e retorna um token JWT.
+      parameters:
+      - description: Credenciais de login
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Login do usuário
+      tags:
+      - Autenticação
+  /register:
+    post:
+      consumes:
+      - application/json
+      description: Cria um novo usuário com senha criptografada.
+      parameters:
+      - description: Dados do usuário
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.RegisterRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Cadastrar usuário
+      tags:
+      - Autenticação
+  /tasks:
+    get:
+      description: Retorna todas as tarefas cadastradas.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Task'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Listar tarefas
+      tags:
+      - Tarefas
+    post:
+      consumes:
+      - application/json
+      description: Cria uma nova tarefa.
+      parameters:
+      - description: Dados da tarefa
+        in: body
+        name: task
+        required: true
+        schema:
+          $ref: '#/definitions/models.Task'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Task'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Criar tarefa
+      tags:
+      - Tarefas
+  /tasks/{id}:
+    delete:
+      description: Exclui uma tarefa pelo ID.
+      parameters:
+      - description: ID da tarefa
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "404":
+          description: Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Excluir tarefa
+      tags:
+      - Tarefas
+    put:
+      consumes:
+      - application/json
+      description: Atualiza uma tarefa existente.
+      parameters:
+      - description: ID da tarefa
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Dados da tarefa
+        in: body
+        name: task
+        required: true
+        schema:
+          $ref: '#/definitions/models.Task'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Task'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "404":
+          description: Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Atualizar tarefa
+      tags:
+      - Tarefas
+securityDefinitions:
+  BearerAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

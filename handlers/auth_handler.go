@@ -20,6 +20,17 @@ type RegisterRequest struct {
 	Password string `json:"password"`
 }
 
+// RegisterHandler godoc
+// @Summary Cadastrar usuário
+// @Description Cria um novo usuário com senha criptografada.
+// @Tags Autenticação
+// @Accept json
+// @Produce json
+// @Param request body RegisterRequest true "Dados do usuário"
+// @Success 201 {object} map[string]string
+// @Failure 400 {string} string
+// @Failure 500 {string} string
+// @Router /register [post]
 func RegisterHandler(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 
@@ -66,6 +77,18 @@ func RegisterHandler(db *sql.DB) http.HandlerFunc {
 	}
 }
 
+// LoginHandler godoc
+// @Summary Login do usuário
+// @Description Autentica o usuário e retorna um token JWT.
+// @Tags Autenticação
+// @Accept json
+// @Produce json
+// @Param request body LoginRequest true "Credenciais de login"
+// @Success 200 {object} map[string]string
+// @Failure 400 {string} string
+// @Failure 401 {string} string
+// @Failure 500 {string} string
+// @Router /login [post]
 func LoginHandler(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 
