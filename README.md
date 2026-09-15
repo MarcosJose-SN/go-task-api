@@ -74,6 +74,8 @@ tasks
 ├── id
 ├── title
 └── completed
+
+
 🐳 Docker
 
 O projeto possui um ambiente configurado com Docker Compose, permitindo executar a API e o PostgreSQL em containers.
@@ -106,6 +108,8 @@ Parar os containers
 docker compose down
 Visualizar os logs da API
 docker compose logs -f api
+
+
 ⚙️ Configuração
 
 Crie um arquivo .env na raiz do projeto:
@@ -118,6 +122,7 @@ DB_NAME=tasks
 JWT_SECRET=sua_chave_secreta
 
 ⚠️ O arquivo .env contém informações sensíveis e não deve ser enviado para o GitHub. Ele está protegido pelo .gitignore.
+
 
 ▶️ Executando localmente
 
@@ -132,6 +137,8 @@ go run .
 A API ficará disponível em:
 
 http://localhost:8080
+
+
 📚 Swagger / OpenAPI
 
 A API possui documentação interativa utilizando Swagger/OpenAPI.
@@ -148,6 +155,8 @@ Visualizar modelos JSON
 Autenticar utilizando JWT
 Executar requisições
 Visualizar respostas HTTP
+
+
 🔑 Autenticação pelo Swagger
 Execute POST /login.
 Copie o token JWT retornado.
@@ -155,6 +164,8 @@ Clique em Authorize.
 Informe:
 Bearer SEU_TOKEN_JWT
 Execute os endpoints protegidos de /tasks.
+
+
 🔑 Endpoints
 Autenticação
 Método	Endpoint	Descrição
@@ -170,6 +181,8 @@ DELETE	/tasks/{id}	JWT	Excluir tarefa
 As rotas de tarefas exigem o seguinte header:
 
 Authorization: Bearer SEU_TOKEN_JWT
+
+
 👤 Cadastro de usuário
 POST /register
 
@@ -182,6 +195,7 @@ Exemplo de requisição:
 }
 
 A senha é convertida em hash utilizando bcrypt antes de ser armazenada no banco de dados.
+
 
 🔐 Login
 POST /login
@@ -198,6 +212,8 @@ A API retorna um token JWT após a autenticação:
 {
   "token": "SEU_TOKEN_JWT"
 }
+
+
 ➕ Criar tarefa
 POST /tasks
 
@@ -211,6 +227,8 @@ Body:
   "title": "Estudar Go",
   "completed": false
 }
+
+
 📋 Listar tarefas
 GET /tasks
 
@@ -227,6 +245,8 @@ Exemplo de resposta:
     "completed": false
   }
 ]
+
+
 ✏️ Atualizar tarefa
 PUT /tasks/{id}
 
@@ -240,6 +260,8 @@ Body:
   "title": "Estudar Go e PostgreSQL",
   "completed": true
 }
+
+
 🗑️ Excluir tarefa
 DELETE /tasks/{id}
 
@@ -250,6 +272,8 @@ DELETE /tasks/1
 Resposta:
 
 204 No Content
+
+
 🧪 Testes
 
 O projeto possui testes automatizados utilizando o pacote nativo de testes do Go.
@@ -261,6 +285,8 @@ go test ./...
 Resultado esperado:
 
 ok      github.com/MarcosJose/go-task-api
+
+
 📖 Gerar documentação Swagger
 
 Caso as anotações da API sejam alteradas, a documentação pode ser regenerada utilizando:
@@ -330,6 +356,8 @@ O arquivo .env também existe localmente, mas não é versionado no GitHub por e
                                │
                                ▼
                          JSON Response
+
+
 📊 Status HTTP utilizados
 Código	Significado
 200	Requisição processada com sucesso
@@ -340,6 +368,8 @@ Código	Significado
 404	Recurso não encontrado
 405	Método não permitido
 500	Erro interno do servidor
+
+
 🎯 Objetivo do projeto
 
 Este projeto foi desenvolvido como parte do meu portfólio de Backend, com foco no desenvolvimento de APIs utilizando Go.
@@ -361,6 +391,8 @@ Testes automatizados
 Variáveis de ambiente
 Git e GitHub
 Organização de projetos Backend
+
+
 🚧 Possíveis evoluções
 
 Como próximos passos, o projeto pode receber:
@@ -376,15 +408,21 @@ WebSockets
 Logs estruturados
 CI/CD
 Deploy em cloud
-👨‍💻 Autor
-Marcos José
 
-Desenvolvedor em formação com foco em Backend, Go, APIs REST, bancos de dados e desenvolvimento de software.
+
+## 👨‍💻 Autor
+
+**Marcos José**
+
+Desenvolvedor em formação com foco em **Backend, Go, APIs REST, bancos de dados e desenvolvimento de software**.
 
 Também possuo experiência com programação, desenvolvimento de jogos digitais e tecnologias educacionais.
 
-🌐 Contato
-GitHub: MarcosJose-SN
-LinkedIn: Marcos José
+### 🌐 Contato
+
+- GitHub: https://github.com/MarcosJose-SN
+- LinkedIn: https://www.linkedin.com/in/marcos-jose-380915389/
+
+---
 
 ⭐ Se este projeto foi útil ou interessante, considere deixar uma estrela no repositório.
