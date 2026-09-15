@@ -420,9 +420,10 @@ Também possuo experiência com programação, desenvolvimento de jogos digitais
 
 ### 🌐 Contato
 
-- GitHub: https://github.com/MarcosJose-SN
-- LinkedIn: https://www.linkedin.com/in/marcos-jose-380915389/
-- [Google](https://google.com).
+* GitHub: [MarcosJose-SN](https://github.com/MarcosJose-SN)
+
+* LinkedIn: [Marcos José](https://www.linkedin.com/in/marcos-jose-380915389/)
+
 ---
 
 ⭐ Se este projeto foi útil ou interessante, considere deixar uma estrela no repositório.
