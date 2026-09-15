@@ -1,22 +1,26 @@
 # 🚀 Go Task API
 
-API REST desenvolvida em **Go (Golang)** para gerenciamento de tarefas, com autenticação JWT, PostgreSQL e ambiente totalmente containerizado com Docker.
+API REST desenvolvida em **Go** para gerenciamento de tarefas, com autenticação de usuários, JWT, PostgreSQL, Docker e documentação interativa com Swagger/OpenAPI.
 
-Projeto desenvolvido com foco em práticas de **Backend**, organização de código, autenticação, banco de dados, testes e integração com Docker.
+Projeto de portfólio focado em demonstrar conhecimentos práticos de **Backend com Go**, APIs REST, banco de dados, autenticação, segurança, containerização, testes e documentação.
 
 ---
 
 ## 🛠️ Tecnologias
 
-* **Go 1.27**
-* **PostgreSQL 16**
-* **Docker**
-* **Docker Compose**
-* **JWT**
-* **bcrypt**
-* **REST API**
-* **SQL**
-* **Git / GitHub**
+- **Go 1.27**
+- **net/http**
+- **PostgreSQL 16**
+- **database/sql**
+- **lib/pq**
+- **JWT** — `github.com/golang-jwt/jwt/v5`
+- **bcrypt** — `golang.org/x/crypto/bcrypt`
+- **godotenv**
+- **Docker**
+- **Docker Compose**
+- **Swagger / OpenAPI**
+- **SQL**
+- **Git / GitHub**
 
 ---
 
@@ -24,61 +28,66 @@ Projeto desenvolvido com foco em práticas de **Backend**, organização de cód
 
 ### 🔐 Autenticação
 
-* Cadastro de usuários
-* Login com usuário e senha
-* Senhas protegidas com bcrypt
-* Geração de tokens JWT
-* Validação de tokens
-* Middleware de autenticação
-* Proteção das rotas da API
+- Cadastro de usuários
+- Login com usuário e senha
+- Senhas protegidas com bcrypt
+- Geração de tokens JWT
+- Validação de tokens JWT através de middleware
+- Proteção das rotas de tarefas
+- Autenticação utilizando `Authorization: Bearer`
 
 ### 📋 Gerenciamento de tarefas
 
-* Criar tarefa
-* Listar tarefas
-* Buscar tarefa por ID
-* Atualizar tarefa
-* Excluir tarefa
-* Marcar tarefa como concluída
-* Validação dos dados enviados
+- Listar tarefas
+- Criar tarefas
+- Atualizar tarefas
+- Excluir tarefas
+- Validação de dados
+- Tratamento de erros
+- Respostas HTTP apropriadas
 
-### 🗄️ Banco de dados
+### 📚 Documentação
 
-Utiliza **PostgreSQL** para armazenamento dos usuários e tarefas.
+- Documentação da API utilizando Swagger/OpenAPI
+- Visualização dos endpoints
+- Teste dos endpoints diretamente pelo navegador
+- Documentação da autenticação JWT
+- Documentação dos parâmetros e respostas
 
-Estrutura principal:
+---
+
+## 🗄️ Banco de dados
+
+O projeto utiliza **PostgreSQL 16** para armazenar usuários e tarefas.
+
+### Tabela `users`
 
 ```text
 users
 ├── id
 ├── username
 ├── email
-└── password_hash
-
+├── password_hash
+└── created_at
+Tabela tasks
 tasks
 ├── id
 ├── title
 └── completed
-```
+🐳 Docker
 
----
+O projeto possui um ambiente configurado com Docker Compose, permitindo executar a API e o PostgreSQL em containers.
 
-## 🐳 Docker
-
-O projeto possui ambiente configurado com **Docker Compose**, permitindo executar a API e o PostgreSQL através de containers.
-
-Arquitetura:
-
-```text
+Arquitetura
 ┌─────────────────────────┐
-│      Cliente / API      │
+│        Cliente          │
 │      localhost:8080     │
 └────────────┬────────────┘
              │
              ▼
 ┌─────────────────────────┐
 │      Go Task API        │
-│        Go + JWT         │
+│      Go + JWT + REST    │
 └────────────┬────────────┘
              │
              ▼
@@ -86,126 +95,195 @@ Arquitetura:
 │      PostgreSQL 16      │
 │        port 5432        │
 └─────────────────────────┘
-```
+Iniciar o projeto
 
-Para iniciar o projeto:
+Com o Docker Desktop iniciado:
 
-```bash
 docker compose up -d --build
-```
-
-Para verificar os containers:
-
-```bash
-docker ps
-```
-
-Para parar os containers:
-
-```bash
+Verificar os containers
+docker compose ps
+Parar os containers
 docker compose down
-```
+Visualizar os logs da API
+docker compose logs -f api
+⚙️ Configuração
 
----
+Crie um arquivo .env na raiz do projeto:
 
-## ⚙️ Configuração
-
-Crie um arquivo `.env` na raiz do projeto:
-
-```env
 DB_HOST=localhost
 DB_PORT=5432
 DB_USER=postgres
 DB_PASSWORD=sua_senha
 DB_NAME=tasks
 JWT_SECRET=sua_chave_secreta
-```
 
-> ⚠️ O arquivo `.env` não deve ser enviado para o GitHub. Ele está protegido pelo `.gitignore`.
+⚠️ O arquivo .env contém informações sensíveis e não deve ser enviado para o GitHub. Ele está protegido pelo .gitignore.
 
----
+▶️ Executando localmente
 
-## ▶️ Executando localmente
+Para baixar as dependências:
 
-Instale as dependências:
-
-```bash
 go mod download
-```
 
-Execute os testes:
+Para executar a aplicação:
 
-```bash
-go test ./...
-```
-
-Execute a API:
-
-```bash
 go run .
-```
 
 A API ficará disponível em:
 
-```text
 http://localhost:8080
-```
+📚 Swagger / OpenAPI
 
----
+A API possui documentação interativa utilizando Swagger/OpenAPI.
 
-## 🔑 Endpoints
+Depois de iniciar a aplicação, acesse:
 
-### Autenticação
+http://localhost:8080/swagger/index.html
 
-| Método | Endpoint    | Descrição         |
-| ------ | ----------- | ----------------- |
-| POST   | `/register` | Cadastrar usuário |
-| POST   | `/login`    | Realizar login    |
+O Swagger permite:
 
-### Tarefas
+Visualizar os endpoints
+Consultar parâmetros
+Visualizar modelos JSON
+Autenticar utilizando JWT
+Executar requisições
+Visualizar respostas HTTP
+🔑 Autenticação pelo Swagger
+Execute POST /login.
+Copie o token JWT retornado.
+Clique em Authorize.
+Informe:
+Bearer SEU_TOKEN_JWT
+Execute os endpoints protegidos de /tasks.
+🔑 Endpoints
+Autenticação
+Método	Endpoint	Descrição
+POST	/register	Cadastrar usuário
+POST	/login	Realizar login
+Tarefas
+Método	Endpoint	Autenticação	Descrição
+GET	/tasks	JWT	Listar tarefas
+POST	/tasks	JWT	Criar tarefa
+PUT	/tasks/{id}	JWT	Atualizar tarefa
+DELETE	/tasks/{id}	JWT	Excluir tarefa
 
-| Método | Endpoint      | Descrição        |
-| ------ | ------------- | ---------------- |
-| GET    | `/tasks`      | Listar tarefas   |
-| GET    | `/tasks/{id}` | Buscar tarefa    |
-| POST   | `/tasks`      | Criar tarefa     |
-| PUT    | `/tasks/{id}` | Atualizar tarefa |
-| DELETE | `/tasks/{id}` | Excluir tarefa   |
+As rotas de tarefas exigem o seguinte header:
 
-As rotas de tarefas exigem autenticação através de:
+Authorization: Bearer SEU_TOKEN_JWT
+👤 Cadastro de usuário
+POST /register
 
-```text
-Authorization: Bearer SEU_TOKEN
-```
+Exemplo de requisição:
 
----
+{
+  "username": "marcos",
+  "email": "marcos@email.com",
+  "password": "123456"
+}
 
-## 🧪 Testes
+A senha é convertida em hash utilizando bcrypt antes de ser armazenada no banco de dados.
 
-O projeto possui testes automatizados utilizando o pacote de testes nativo do Go.
+🔐 Login
+POST /login
+
+Exemplo de requisição:
+
+{
+  "username": "marcos",
+  "password": "123456"
+}
+
+A API retorna um token JWT após a autenticação:
+
+{
+  "token": "SEU_TOKEN_JWT"
+}
+➕ Criar tarefa
+POST /tasks
+
+Header:
+
+Authorization: Bearer SEU_TOKEN_JWT
+
+Body:
+
+{
+  "title": "Estudar Go",
+  "completed": false
+}
+📋 Listar tarefas
+GET /tasks
+
+Header:
+
+Authorization: Bearer SEU_TOKEN_JWT
+
+Exemplo de resposta:
+
+[
+  {
+    "id": 1,
+    "title": "Estudar Go",
+    "completed": false
+  }
+]
+✏️ Atualizar tarefa
+PUT /tasks/{id}
+
+Exemplo:
+
+PUT /tasks/1
+
+Body:
+
+{
+  "title": "Estudar Go e PostgreSQL",
+  "completed": true
+}
+🗑️ Excluir tarefa
+DELETE /tasks/{id}
+
+Exemplo:
+
+DELETE /tasks/1
+
+Resposta:
+
+204 No Content
+🧪 Testes
+
+O projeto possui testes automatizados utilizando o pacote nativo de testes do Go.
 
 Execute:
 
-```bash
 go test ./...
-```
 
 Resultado esperado:
 
-```text
-ok github.com/MarcosJose/go-task-api
-```
+ok      github.com/MarcosJose/go-task-api
+📖 Gerar documentação Swagger
 
----
+Caso as anotações da API sejam alteradas, a documentação pode ser regenerada utilizando:
 
-## 📂 Estrutura do projeto
+go run github.com/swaggo/swag/cmd/swag init
 
-```text
+Os arquivos gerados ficam na pasta:
+
+docs/
+├── docs.go
+├── swagger.json
+└── swagger.yaml
+📂 Estrutura do projeto
 go-task-api/
 │
 ├── auth/
 │   ├── jwt.go
 │   └── middleware.go
+│
+├── docs/
+│   ├── docs.go
+│   ├── swagger.json
+│   └── swagger.yaml
 │
 ├── handlers/
 │   ├── auth_handler.go
@@ -214,49 +292,99 @@ go-task-api/
 ├── models/
 │   └── task.go
 │
+├── .gitignore
 ├── Dockerfile
 ├── docker-compose.yml
 ├── go.mod
 ├── go.sum
 ├── main.go
 ├── main_test.go
-└── .gitignore
-```
+└── README.md
 
----
+O arquivo .env também existe localmente, mas não é versionado no GitHub por estar protegido pelo .gitignore.
 
-## 🎯 Objetivo do projeto
+🔄 Fluxo da aplicação
+                    ┌──────────────┐
+                    │    Cliente   │
+                    └──────┬───────┘
+                           │
+                           ▼
+                    ┌──────────────┐
+                    │   HTTP API   │
+                    └──────┬───────┘
+                           │
+                           ▼
+                  ┌─────────────────┐
+                  │ JWT Middleware  │
+                  └────────┬────────┘
+                           │
+                    Token válido?
+                       │       │
+                      NÃO     SIM
+                       │       │
+                       ▼       ▼
+                      401   Handlers
+                               │
+                               ▼
+                         PostgreSQL
+                               │
+                               ▼
+                         JSON Response
+📊 Status HTTP utilizados
+Código	Significado
+200	Requisição processada com sucesso
+201	Recurso criado
+204	Requisição processada sem conteúdo
+400	Requisição inválida
+401	Não autorizado
+404	Recurso não encontrado
+405	Método não permitido
+500	Erro interno do servidor
+🎯 Objetivo do projeto
 
-Este projeto foi desenvolvido como parte do meu **portfólio de Backend**, com foco no desenvolvimento de APIs utilizando Go.
+Este projeto foi desenvolvido como parte do meu portfólio de Backend, com foco no desenvolvimento de APIs utilizando Go.
 
 O objetivo é demonstrar conhecimentos práticos em:
 
-* Desenvolvimento de APIs REST
-* Go
-* PostgreSQL
-* SQL
-* Autenticação JWT
-* Segurança de senhas
-* Middleware
-* Docker
-* Docker Compose
-* Testes automatizados
-* Git e GitHub
-* Organização de projetos Backend
+Desenvolvimento de APIs REST
+Go
+PostgreSQL
+SQL
+CRUD
+Autenticação JWT
+Segurança de senhas com bcrypt
+Middleware
+Docker
+Docker Compose
+Swagger/OpenAPI
+Testes automatizados
+Variáveis de ambiente
+Git e GitHub
+Organização de projetos Backend
+🚧 Possíveis evoluções
 
----
+Como próximos passos, o projeto pode receber:
 
-## 👨‍💻 Autor
+Testes unitários mais abrangentes
+Testes de integração
+Migrations
+Paginação
+Filtros e ordenação
+Relacionamento entre usuários e tarefas
+Refresh Token
+WebSockets
+Logs estruturados
+CI/CD
+Deploy em cloud
+👨‍💻 Autor
+Marcos José
 
-**Marcos José**
+Desenvolvedor em formação com foco em Backend, Go, APIs REST, bancos de dados e desenvolvimento de software.
 
-Desenvolvedor em formação com foco em **Backend, Go, APIs REST, bancos de dados e desenvolvimento de software**.
+Também possuo experiência com programação, desenvolvimento de jogos digitais e tecnologias educacionais.
 
-### Contato
-
-* GitHub: [MarcosJose-SN](https://github.com/MarcosJose-SN)
-* LinkedIn: [Marcos José](https://www.linkedin.com/in/marcos-jose-380915389/)
-
----
+🌐 Contato
+GitHub: MarcosJose-SN
+LinkedIn: Marcos José
 
 ⭐ Se este projeto foi útil ou interessante, considere deixar uma estrela no repositório.
