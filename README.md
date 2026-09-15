@@ -69,18 +69,26 @@ users
 ├── email
 ├── password_hash
 └── created_at
-Tabela tasks
+```
+
+### Tabela `tasks`
+
+```text
 tasks
 ├── id
 ├── title
 └── completed
+```
 
+---
 
-🐳 Docker
+## 🐳 Docker
 
-O projeto possui um ambiente configurado com Docker Compose, permitindo executar a API e o PostgreSQL em containers.
+O projeto possui um ambiente configurado com **Docker Compose**, permitindo executar a API e o PostgreSQL em containers.
 
-Arquitetura
+### Arquitetura
+
+```text
 ┌─────────────────────────┐
 │        Cliente          │
 │      localhost:8080     │
@@ -97,147 +105,210 @@ Arquitetura
 │      PostgreSQL 16      │
 │        port 5432        │
 └─────────────────────────┘
-Iniciar o projeto
+```
+
+### Iniciar o projeto
 
 Com o Docker Desktop iniciado:
 
+```bash
 docker compose up -d --build
-Verificar os containers
+```
+
+### Verificar os containers
+
+```bash
 docker compose ps
-Parar os containers
+```
+
+### Parar os containers
+
+```bash
 docker compose down
-Visualizar os logs da API
+```
+
+### Visualizar os logs da API
+
+```bash
 docker compose logs -f api
+```
 
+---
 
-⚙️ Configuração
+## ⚙️ Configuração
 
-Crie um arquivo .env na raiz do projeto:
+Crie um arquivo `.env` na raiz do projeto:
 
+```env
 DB_HOST=localhost
 DB_PORT=5432
 DB_USER=postgres
 DB_PASSWORD=sua_senha
 DB_NAME=tasks
 JWT_SECRET=sua_chave_secreta
+```
 
-⚠️ O arquivo .env contém informações sensíveis e não deve ser enviado para o GitHub. Ele está protegido pelo .gitignore.
+> ⚠️ O arquivo `.env` contém informações sensíveis e não deve ser enviado para o GitHub. Ele está protegido pelo `.gitignore`.
 
+---
 
-▶️ Executando localmente
+## ▶️ Executando localmente
 
 Para baixar as dependências:
 
+```bash
 go mod download
+```
 
 Para executar a aplicação:
 
+```bash
 go run .
+```
 
 A API ficará disponível em:
 
+```text
 http://localhost:8080
+```
 
+---
 
-📚 Swagger / OpenAPI
+## 📚 Swagger / OpenAPI
 
 A API possui documentação interativa utilizando Swagger/OpenAPI.
 
 Depois de iniciar a aplicação, acesse:
 
+```text
 http://localhost:8080/swagger/index.html
+```
 
 O Swagger permite:
 
-Visualizar os endpoints
-Consultar parâmetros
-Visualizar modelos JSON
-Autenticar utilizando JWT
-Executar requisições
-Visualizar respostas HTTP
+- Visualizar os endpoints
+- Consultar parâmetros
+- Visualizar modelos JSON
+- Autenticar utilizando JWT
+- Executar requisições
+- Visualizar respostas HTTP
 
+### 🔑 Autenticação pelo Swagger
 
-🔑 Autenticação pelo Swagger
-Execute POST /login.
-Copie o token JWT retornado.
-Clique em Authorize.
-Informe:
+1. Execute `POST /login`.
+2. Copie o token JWT retornado.
+3. Clique em **Authorize**.
+4. Informe:
+
+```text
 Bearer SEU_TOKEN_JWT
-Execute os endpoints protegidos de /tasks.
+```
 
+5. Execute os endpoints protegidos de `/tasks`.
 
-🔑 Endpoints
-Autenticação
-Método	Endpoint	Descrição
-POST	/register	Cadastrar usuário
-POST	/login	Realizar login
-Tarefas
-Método	Endpoint	Autenticação	Descrição
-GET	/tasks	JWT	Listar tarefas
-POST	/tasks	JWT	Criar tarefa
-PUT	/tasks/{id}	JWT	Atualizar tarefa
-DELETE	/tasks/{id}	JWT	Excluir tarefa
+---
+
+## 🔑 Endpoints
+
+### Autenticação
+
+| Método | Endpoint    | Descrição         |
+| ------ | ----------- | ----------------- |
+| POST   | `/register` | Cadastrar usuário |
+| POST   | `/login`    | Realizar login    |
+
+### Tarefas
+
+| Método | Endpoint      | Autenticação | Descrição        |
+| ------ | ------------- | ------------ | ----------------- |
+| GET    | `/tasks`      | JWT          | Listar tarefas    |
+| POST   | `/tasks`      | JWT          | Criar tarefa      |
+| PUT    | `/tasks/{id}` | JWT          | Atualizar tarefa  |
+| DELETE | `/tasks/{id}` | JWT          | Excluir tarefa    |
 
 As rotas de tarefas exigem o seguinte header:
 
+```text
 Authorization: Bearer SEU_TOKEN_JWT
+```
 
+---
 
-👤 Cadastro de usuário
-POST /register
+## 👤 Cadastro de usuário
+
+`POST /register`
 
 Exemplo de requisição:
 
+```json
 {
   "username": "marcos",
   "email": "marcos@email.com",
   "password": "123456"
 }
+```
 
 A senha é convertida em hash utilizando bcrypt antes de ser armazenada no banco de dados.
 
+---
 
-🔐 Login
-POST /login
+## 🔐 Login
+
+`POST /login`
 
 Exemplo de requisição:
 
+```json
 {
   "username": "marcos",
   "password": "123456"
 }
+```
 
 A API retorna um token JWT após a autenticação:
 
+```json
 {
   "token": "SEU_TOKEN_JWT"
 }
+```
 
+---
 
-➕ Criar tarefa
-POST /tasks
+## ➕ Criar tarefa
+
+`POST /tasks`
 
 Header:
 
+```text
 Authorization: Bearer SEU_TOKEN_JWT
+```
 
 Body:
 
+```json
 {
   "title": "Estudar Go",
   "completed": false
 }
+```
 
+---
 
-📋 Listar tarefas
-GET /tasks
+## 📋 Listar tarefas
+
+`GET /tasks`
 
 Header:
 
+```text
 Authorization: Bearer SEU_TOKEN_JWT
+```
 
 Exemplo de resposta:
 
+```json
 [
   {
     "id": 1,
@@ -245,61 +316,89 @@ Exemplo de resposta:
     "completed": false
   }
 ]
+```
 
+---
 
-✏️ Atualizar tarefa
-PUT /tasks/{id}
+## ✏️ Atualizar tarefa
+
+`PUT /tasks/{id}`
 
 Exemplo:
 
+```text
 PUT /tasks/1
+```
 
 Body:
 
+```json
 {
   "title": "Estudar Go e PostgreSQL",
   "completed": true
 }
+```
 
+---
 
-🗑️ Excluir tarefa
-DELETE /tasks/{id}
+## 🗑️ Excluir tarefa
+
+`DELETE /tasks/{id}`
 
 Exemplo:
 
+```text
 DELETE /tasks/1
+```
 
 Resposta:
 
+```text
 204 No Content
+```
 
+---
 
-🧪 Testes
+## 🧪 Testes
 
 O projeto possui testes automatizados utilizando o pacote nativo de testes do Go.
 
 Execute:
 
+```bash
 go test ./...
+```
 
 Resultado esperado:
 
+```text
 ok      github.com/MarcosJose/go-task-api
+```
 
+---
 
-📖 Gerar documentação Swagger
+## 📖 Gerar documentação Swagger
 
 Caso as anotações da API sejam alteradas, a documentação pode ser regenerada utilizando:
 
+```bash
 go run github.com/swaggo/swag/cmd/swag init
+```
 
 Os arquivos gerados ficam na pasta:
 
+```text
 docs/
 ├── docs.go
 ├── swagger.json
 └── swagger.yaml
-📂 Estrutura do projeto
+```
+
+---
+
+## 📂 Estrutura do projeto
+
+```text
 go-task-api/
 │
 ├── auth/
@@ -326,10 +425,15 @@ go-task-api/
 ├── main.go
 ├── main_test.go
 └── README.md
+```
 
-O arquivo .env também existe localmente, mas não é versionado no GitHub por estar protegido pelo .gitignore.
+> O arquivo `.env` também existe localmente, mas não é versionado no GitHub por estar protegido pelo `.gitignore`.
 
-🔄 Fluxo da aplicação
+---
+
+## 🔄 Fluxo da aplicação
+
+```text
                     ┌──────────────┐
                     │    Cliente   │
                     └──────┬───────┘
@@ -356,59 +460,66 @@ O arquivo .env também existe localmente, mas não é versionado no GitHub por e
                                │
                                ▼
                          JSON Response
+```
 
+---
 
-📊 Status HTTP utilizados
-Código	Significado
-200	Requisição processada com sucesso
-201	Recurso criado
-204	Requisição processada sem conteúdo
-400	Requisição inválida
-401	Não autorizado
-404	Recurso não encontrado
-405	Método não permitido
-500	Erro interno do servidor
+## 📊 Status HTTP utilizados
 
+| Código | Significado                        |
+| ------ | ----------------------------------- |
+| 200    | Requisição processada com sucesso   |
+| 201    | Recurso criado                      |
+| 204    | Requisição processada sem conteúdo  |
+| 400    | Requisição inválida                 |
+| 401    | Não autorizado                      |
+| 404    | Recurso não encontrado              |
+| 405    | Método não permitido                |
+| 500    | Erro interno do servidor            |
 
-🎯 Objetivo do projeto
+---
+
+## 🎯 Objetivo do projeto
 
 Este projeto foi desenvolvido como parte do meu portfólio de Backend, com foco no desenvolvimento de APIs utilizando Go.
 
 O objetivo é demonstrar conhecimentos práticos em:
 
-Desenvolvimento de APIs REST
-Go
-PostgreSQL
-SQL
-CRUD
-Autenticação JWT
-Segurança de senhas com bcrypt
-Middleware
-Docker
-Docker Compose
-Swagger/OpenAPI
-Testes automatizados
-Variáveis de ambiente
-Git e GitHub
-Organização de projetos Backend
+- Desenvolvimento de APIs REST
+- Go
+- PostgreSQL
+- SQL
+- CRUD
+- Autenticação JWT
+- Segurança de senhas com bcrypt
+- Middleware
+- Docker
+- Docker Compose
+- Swagger/OpenAPI
+- Testes automatizados
+- Variáveis de ambiente
+- Git e GitHub
+- Organização de projetos Backend
 
+---
 
-🚧 Possíveis evoluções
+## 🚧 Possíveis evoluções
 
 Como próximos passos, o projeto pode receber:
 
-Testes unitários mais abrangentes
-Testes de integração
-Migrations
-Paginação
-Filtros e ordenação
-Relacionamento entre usuários e tarefas
-Refresh Token
-WebSockets
-Logs estruturados
-CI/CD
-Deploy em cloud
+- Testes unitários mais abrangentes
+- Testes de integração
+- Migrations
+- Paginação
+- Filtros e ordenação
+- Relacionamento entre usuários e tarefas
+- Refresh Token
+- WebSockets
+- Logs estruturados
+- CI/CD
+- Deploy em cloud
 
+---
 
 ## 👨‍💻 Autor
 
@@ -420,9 +531,8 @@ Também possuo experiência com programação, desenvolvimento de jogos digitais
 
 ### 🌐 Contato
 
-* GitHub: [MarcosJose-SN](https://github.com/MarcosJose-SN)
-
-* LinkedIn: [Marcos José](https://www.linkedin.com/in/marcos-jose-380915389/)
+- GitHub: [MarcosJose-SN](https://github.com/MarcosJose-SN)
+- LinkedIn: [Marcos José](https://www.linkedin.com/in/marcos-jose-380915389/)
 
 ---
 
